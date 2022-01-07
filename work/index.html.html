@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+      <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+      <!--google表單回覆資料庫使用前要先嵌入的的語法-->
+      <script type="text/javascript">
+        function formresponse() {
+            var m = document.forms["form1"]["name"].value;
+            var d = document.forms["form1"]["message"].value;
+            if (m==null || m=="")
+               {
+                alert("不要唬弄我!");
+                return false;
+               }
+            else if (d==null || d=="")
+               {
+                alert("就叫你不要唬弄我了!");
+                return false;
+               }
+            else
+               {
+                var MySubmit = "https://docs.google.com/forms/d/e/1FAIpQLSeiHmqFSbBt74n_65HKhldJrLONoQ6SNcDrXNtw2SQ9ew-13A/formResponse?usp=pp_url&entry.594715709=" + m + "&entry.1177446234=" + d + "&submit=Submit";
+                var NewOpen = window.open(MySubmit);
+               }
+        }
+      </script>      
+      
+      <!--痞客幫API前置作業-->
+      <script>
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://emma.pixnet.cc/mainpage/blog/categories/hot/28?page=1&per_page=3&api_version=2&format=json";
+
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var myArr = JSON.parse(xmlhttp.responseText);
+            myFunction(myArr);
+          }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+        function myFunction(arr) {
+          var data = arr.articles;
+          var out = "";
+          var i;
+          for (i = 0; i < data.length; i++) {
+            if ( data[i].thumb != "" ) out += '<img src="' + data[i].thumb + '" />';
+            if ( data[i].title != "" ) out += '<p><a href="' + data[i].link + '" target="_blank">' + data[i].title + '</a></p>';
+            if ( data[i].address != undefined ) out += '<p><a href="https://www.google.com.tw/maps?daddr=' + data[i].address + '" target="_blank">' + data[i].address + '</a></p>';
+            out += '<p> </p>';
+            out += '<br /><br /><br />';
+          }
+          document.getElementById("pixnet-stuff").innerHTML = out;
+        }
+      </script>
+      
+      <script src="https://www.gstatic.com/charts/loader.js"></script>
+	
+      <script>
+
+      // https://developers.google.com/chart/interactive/docs/quick_start
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.	
+      google.charts.setOnLoadCallback(init);
+
+      function init() {
+        // 這個例子使用的試算表是 https://docs.google.com/spreadsheets/d/1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk/copy
+        // 將上述試算表另存副本後，你要在自己的雲端硬碟將該試算表設定成[知道連結的使用者都能查看]。
+        // 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
+        // 也就是將下列的 1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
+        var url =
+          'https://docs.google.com/spreadsheets/d/1yFbfb5xNrdPXozDSWnvNkxVrGMt3DWYf1QOui-YT51Y/gviz/tq?sheet=工作表1';
+        var query = new google.visualization.Query(url);
+        query.setQuery('select *');
+        query.send(processSheetsData);
+      }	
+      </script>
+    </head>
+
+    <body>
+     
+      
+      
+        <nav>
+          <div class="nav-wrapper">
+            <a href="#" class="brand-logo">一生必去的景點介紹</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <li><a href="https://www.100.com.tw/article/3494" target="_blank"></a></li>
+              <li><a href="https://www.100.com.tw/article/2232" target="_blank"></a></li>
+              <li><a href="https://www.100.com.tw/article/3870" target="_blank"></a></li>
+			  <li><a href="https://www.100.com.tw/article/397"></a></li>
+            </ul>
+          </div>
+        </nav>         
+            
+
+					
+      
+      <div class="row" id="demo1">  
+        <!--這裡的留空，是因為下面的迴圈1執行完之後會再寫回來這邊-->
+      </div>
+      
+      
+
+      
+      <script>
+        
+        //圖片、連結等等的陣列們
+        picture = [" "];
+        
+        cardname = [" "];
+        
+        paragrath = [" "];
+        
+        hyperlink = [" "];
+        
+             
+        function processSheetsData(response) {
+          var data = response.getDataTable();
+          var columns = data.getNumberOfColumns();
+          var rows = data.getNumberOfRows();
+
+          for (var r=0 ; r<rows ; r++) {
+              picture[r] = data.getFormattedValue(r,0);
+              cardname[r] = data.getFormattedValue(r,1);
+              paragrath[r] = data.getFormattedValue(r,2);
+              hyperlink[r] = data.getFormattedValue(r,3);
+             }
+
+                  //網址不知道為甚麼跑不出來，請老師幫忙檢查一下，我猜是我做的網頁沒有放到網路上   
+           
+          
+          
+          var text = "";
+          for ( i = 0 ; i < 6; i++) {
+
+            text = text + '<div class="col s12 m4 l2">';
+            text = text +   '<div class="card">';
+            text = text +      '<div class="card-image">';
+            text = text +          '<img src="' + picture[i] + '">';
+            text = text +          '<span class="card-title">'+ cardname[i] +'</span>';
+            text = text +      '</div>';
+            text = text +      '<div class="card-content">';        
+            text = text +          '<p>'+ paragrath[i] +'</p>';
+            text = text +      '</div>';
+            text = text +      '<div class="card-action">';
+            text = text +          '<a href="hyperlink[i]" target="_blank">點我看更多</a>';
+            text = text +      '</div>';
+            text = text +   '</div>';       
+            text = text + '</div>';
+          }
+          
+          document.getElementById("demo1").innerHTML = text;
+        
+        }
+       
+      </script>
+
+      
+      
+      <div>
+        <h5>其他旅遊推薦</h5>
+      </div>      
+  
+      
+      
+      <div id="pixnet-stuff">
+        <!--痞客幫API置入-->
+	  </div>
+      
+      
+
+      <!--透過Material CSS寫的google表單-->      
+      <div class="row">
+         <form class="col s12" name="form1" action="javascript:formresponse();">
+          <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="icon_prefix" type="text" class="validate" id="name" name="name">
+                <label for="icon_prefix">你的稱呼</label>
+            </div>
+          </div>
+          <div class="input-field col s6">
+              <i class="material-icons prefix">chat</i>
+              <input id="icon_message" type="text" class="validate" id="message" name="message">
+              <label for="icon_message">想推薦我的景點</label><br><br>          
+              <a class="waves-effect waves-light btn" href="javascript:formresponse();">送出</a>             
+            </div>     
+         </form>
+      </div>
+      
+            
+      
+      <!--用Material CSS寫的footer-->   
+      <footer class="page-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">我的夢想是走遍世界各地</h5>
+              <p class="grey-text text-lighten-4">kenny0925052255@gmail.com</p>
+              <p class="grey-text text-lighten-4">個人 09xxxx2255  公司 04-2255xxxx</p>
+            </div>                
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            © 2022成立新創公司
+            <a class="grey-text text-lighten-4 right" href="#!">創辦人 洪揚</a>
+          </div>
+        </div>
+      </footer>
+
+      
+    </body>
+  </html>
